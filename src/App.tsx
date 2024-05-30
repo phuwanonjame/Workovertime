@@ -20,7 +20,7 @@ function App() {
   useEffect(() => {
     const LoadData = async () => {
       try {
-        const response = await axios.get(`http://localhost:3002/User`, {
+        const response = await axios.get(`https://serverworkot.onrender.com/User`, {
           params: { IDuser }
         });
         setData(response.data);

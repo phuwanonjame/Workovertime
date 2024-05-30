@@ -116,7 +116,7 @@ function Newrequest({ onClose, data2, countdc }: any) {
     console.table(newData);
 
     axios
-      .post("http://localhost:3002/request", data)
+      .post("https://serverworkot.onrender.com/request", data)
       .then((response) => {
         if (response.status === 200) {
           console.log("ส่งข้อมูลสำเร็จ");
