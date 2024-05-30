@@ -17,7 +17,7 @@ function Login({ setIsLoggedIn }: LoginProps) {
       Password: password,
       Status: 1
     };
-    axios.get("http://localhost:3002/User", { params: data })
+    axios.get("https://serverworkot.onrender.com/User", { params: data })
       .then((response) => {
         if (response.status === 200) {
           console.log(response.data);
