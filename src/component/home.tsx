@@ -35,7 +35,7 @@ function Home({ data }: { data: any }) {
   useEffect(() => {
     if (data.length > 0) {
       axios
-        .get("http://localhost:3002/loadworkOT", {
+        .get("https://serverworkot.onrender.com/loadworkOT", {
           params: { ID_user: data[0].ID_user },
         })
         .then((response) => {
