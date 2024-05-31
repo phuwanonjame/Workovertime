@@ -9,7 +9,7 @@ import Navbar from './component/Navbar';
 interface User {
   Firstname: string;
   Lastname: string;
-  // Add other user properties if needed
+
 }
 
 function App() {
