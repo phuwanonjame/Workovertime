@@ -16,6 +16,7 @@ interface OTData {
   Status: number;
 }
 function Home({ data }: { data: any }) {
+
   const location = useLocation();
   const { userData } = location.state || {};
   const [opennew, setOpennew] = useState(false);
@@ -37,7 +38,9 @@ function Home({ data }: { data: any }) {
   };
 
   useEffect(() => {
+    
     if (userData.length > 0) {
+      
       axios
         .get("https://serverworkot.onrender.com/loadworkOT", {
           params: { ID_user: userData[0].ID_user },
@@ -53,7 +56,7 @@ function Home({ data }: { data: any }) {
           console.error("Error loading data:", error);
         });
     }
-  }, [data]);
+  }, [userData]);
 
   return (
     <div className="w-screen h-[865px] bg-slate-100 flex justify-center items-center">

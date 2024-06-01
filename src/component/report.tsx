@@ -17,7 +17,7 @@ function Report({ reportdata, onClose }: any) {
             X
           </span>
         </div>
-        <div className=" bg-white p-2 rounded-b-md">
+        <div className=" bg-white p-2 max-md:text-sm rounded-b-md">
           <div className="flex justify-between max-md:grid max-md:grid-cols-2 max-md:gap-5 p-5">
             <span>วันที่ออกเอกสาร: {reportdata.startDate}</span>
             <span>สถานที่: {reportdata.location}</span>

@@ -1,6 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Navbar({ data }: { data: any[] }) {
+    const [open, setOpen] = useState(false);
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        sessionStorage.clear();
+     
+        navigate('/');
+    };
+
     return (
         <div className='w-screen h-20 bg-blue-800'>
             <div className='h-full'>
@@ -10,7 +20,18 @@ function Navbar({ data }: { data: any[] }) {
                     </div>
                     <div className='mr-5'>
                         {data.length > 0 ? (
-                            <span className='text-xl text-white'>{`${data[0].Firstname} ${data[0].Lastname}`}</span>
+                            <div>
+                                <span onClick={() => setOpen(!open)} className='text-xl text-white hover:cursor-pointer'>
+                                    {`${data[0].Firstname} ${data[0].Lastname}`}
+                                </span>
+                                {open && (
+                                    <div className='relative'>
+                                        <div className='text-center rounded-md h-22 bg-white'>
+                                            <span onClick={handleLogout} className='hover:cursor-pointer'>Logout</span>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
                         ) : (
                             <span className='text-xl text-white'>Loading...</span>
                         )}

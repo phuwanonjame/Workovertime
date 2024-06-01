@@ -158,7 +158,7 @@ function Newrequest({ onClose, data2, countdc }: any) {
           </div>
           <div className="bg-slate-100 p-2 rounded-b-md shadow-md">
             <div className="bg-slate-300 shadow-md p-5 max-md:text-sm">
-              <div className="flex  items-center">
+              <div className="flex  max-md:flex-col max-md:items-baseline   items-center">
                 <span>เลขที่เอกสาร:</span>
                 <input
                   className="ml-2 rounded-md focus:outline-none p-1 text-center"
@@ -166,7 +166,7 @@ function Newrequest({ onClose, data2, countdc }: any) {
                   value={generateDocumentNumber()}
                   readOnly
                 />
-                <span className="ml-2">วันที่เอกสาร:</span>
+                <span className="ml-2 max-md:mt-2">วันที่เอกสาร:</span>
                 <input
                   className="ml-2 rounded-md focus:outline-none p-1 text-center"
                   type="date"
@@ -174,7 +174,7 @@ function Newrequest({ onClose, data2, countdc }: any) {
                   readOnly
                 />
               </div>
-              <div className="mt-5  flex  items-center">
+              <div className="mt-5 max-md:flex-col max-md:items-baseline  flex  items-center">
                 <span>รหัสพนักงาน:</span>
                 {data2.length > 0 ? (
                   <input
