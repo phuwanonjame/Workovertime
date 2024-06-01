@@ -13,15 +13,14 @@ interface User {
 
 function App() {
   const [data1, setData] = useState<User[]>([]);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
-    return sessionStorage.getItem('isLoggedIn') === 'true';
-  });
+  const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+ 
 
   useEffect(() => {
     const LoadData = async () => {
       try {
         const response = await axios.get(`https://serverworkot.onrender.com/User`, {
-          params: { IDuser: 1 }, // ใส่ IDuser ที่ต้องการดึงข้อมูล
+          params: { IDuser: 1 }, 
         });
         setData(response.data);
         console.log("Loaded Data:", response.data);
@@ -29,8 +28,11 @@ function App() {
         console.error("Error loading data:", error);
       }
     };
-    LoadData();
-  }, []);
+
+    if (!isLoggedIn || isLoggedIn) {
+      LoadData();
+    }
+  }, [isLoggedIn]);
 
   return (
     <BrowserRouter>
@@ -39,7 +41,7 @@ function App() {
         <Route
           path="/home"
           element={
-            isLoggedIn ? (
+            !isLoggedIn || isLoggedIn ? (
               <>
                 <Navbar data={data1} />
                 <Home data={data1} />
