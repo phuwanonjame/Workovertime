@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Newrequest from "./newrequest";
 import axios from "axios";
 import Report from "./report";
+import { useLocation   } from "react-router-dom";
+
 
 interface OTData {
   DocumentID: string;
@@ -13,8 +15,9 @@ interface OTData {
   note: string;
   Status: number;
 }
-
 function Home({ data }: { data: any }) {
+  const location = useLocation();
+  const { userData } = location.state || {};
   const [opennew, setOpennew] = useState(false);
   const [openreport, setOpenreport] = useState(false);
   const [dataOT, setDataOT] = useState<OTData[]>([]);
@@ -22,7 +25,8 @@ function Home({ data }: { data: any }) {
   const [countdocument, setCountdocument] = useState(0);
 
 
-
+  console.log(userData[0].ID_user);
+  
   const toggleReport = () =>{
     setOpenreport(!openreport)
   }
@@ -33,16 +37,17 @@ function Home({ data }: { data: any }) {
   };
 
   useEffect(() => {
-    if (data.length > 0) {
+    if (userData.length > 0) {
       axios
         .get("https://serverworkot.onrender.com/loadworkOT", {
-          params: { ID_user: data[0].ID_user },
+          params: { ID_user: userData[0].ID_user },
         })
         .then((response) => {
           console.log("Data loaded successfully:", response.data);
           setDataOT(response.data.users);
           setCountdocument(response.data.count);
           console.log("จำนวนเอกสาร", countdocument);
+         
         })
         .catch((error) => {
           console.error("Error loading data:", error);
@@ -192,6 +197,8 @@ function Home({ data }: { data: any }) {
         />
       )}
       {openreport && <Report reportdata={selectedOT} onClose={toggleReport}  />}
+
+
     </div>
   );
 }

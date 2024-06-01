@@ -2,11 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-interface LoginProps {
-  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-function Login({ setIsLoggedIn }: LoginProps) {
+function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -17,18 +13,19 @@ function Login({ setIsLoggedIn }: LoginProps) {
       Password: password,
       Status: 1
     };
+
     axios.get("https://serverworkot.onrender.com/User", { params: data })
       .then((response) => {
         if (response.status === 200) {
-          console.log(response.data);
-
-          setIsLoggedIn(true);
-          navigate("/home");
+          console.log("Login successful:", response.data);
+          sessionStorage.setItem('isLoggedIn', 'true');
+          sessionStorage.setItem('userData', JSON.stringify(response.data));
+          navigate("/home", { state: { userData: response.data } });
         } else {
-          console.error("เกิดข้อผิดพลาดในการส่งข้อมูล");
+          console.error("Login failed with status:", response.status);
         }
       }).catch((error) => {
-        console.error("Error loading data:", error);
+        console.error("Error during login:", error);
       });
   }
 
@@ -47,7 +44,7 @@ function Login({ setIsLoggedIn }: LoginProps) {
             </div>
           </div>
           <div>
-            <button className='p-5 bg-blue-700 w-52 text-white hover:opacity-50 rounded-md' onClick={login}>login</button>
+            <button className='p-5 bg-blue-700 w-52 text-white hover:opacity-50 rounded-md' onClick={login}>Login</button>
           </div>
         </div>
       </div>

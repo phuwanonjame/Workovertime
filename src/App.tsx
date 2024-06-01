@@ -9,33 +9,35 @@ import Navbar from './component/Navbar';
 interface User {
   Firstname: string;
   Lastname: string;
-
 }
 
 function App() {
   const [data1, setData] = useState<User[]>([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const IDuser: number = 1;
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
+    return sessionStorage.getItem('isLoggedIn') === 'true';
+  });
+
+  const UserID = 1;
 
   useEffect(() => {
     const LoadData = async () => {
       try {
         const response = await axios.get(`https://serverworkot.onrender.com/User`, {
-          params: { IDuser }
+          params: { IDuser: UserID },
         });
         setData(response.data);
-        console.table("Loaded Data:", response.data);
+        console.log("Loaded Data:", response.data);
       } catch (error) {
         console.error("Error loading data:", error);
       }
     };
     LoadData();
-  }, []);
+  }, [UserID]);
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+        <Route path="/" element={<Login />} />
         <Route
           path="/home"
           element={
