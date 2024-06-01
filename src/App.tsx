@@ -17,13 +17,11 @@ function App() {
     return sessionStorage.getItem('isLoggedIn') === 'true';
   });
 
-  const UserID = 1;
-
   useEffect(() => {
     const LoadData = async () => {
       try {
         const response = await axios.get(`https://serverworkot.onrender.com/User`, {
-          params: { IDuser: UserID },
+          params: { IDuser: 1 }, // ใส่ IDuser ที่ต้องการดึงข้อมูล
         });
         setData(response.data);
         console.log("Loaded Data:", response.data);
@@ -32,7 +30,7 @@ function App() {
       }
     };
     LoadData();
-  }, [UserID]);
+  }, []);
 
   return (
     <BrowserRouter>
