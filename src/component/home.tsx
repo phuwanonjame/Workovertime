@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import Newrequest from "./newrequest";
 import axios from "axios";
 import Report from "./report";
-import { useLocation   } from "react-router-dom";
-
+import { useLocation } from "react-router-dom";
 
 interface OTData {
   DocumentID: string;
@@ -15,32 +14,29 @@ interface OTData {
   note: string;
   Status: number;
 }
-function Home({ data }: { data: any }) {
 
+function Home({ data }: { data: any }) {
   const location = useLocation();
+  const [Statusdata, setStatus] = useState(1);
   const { userData } = location.state || {};
   const [opennew, setOpennew] = useState(false);
   const [openreport, setOpenreport] = useState(false);
   const [dataOT, setDataOT] = useState<OTData[]>([]);
-  const [selectedOT, setSelectedOT] = useState<OTData | null>(null); 
+  const [selectedOT, setSelectedOT] = useState<OTData | null>(null);
   const [countdocument, setCountdocument] = useState(0);
 
+  console.log(userData?.[0]?.ID_user);
 
-  console.log(userData[0].ID_user);
-  
-  const toggleReport = () =>{
-    setOpenreport(!openreport)
-  }
-  
-    
+  const toggleReport = () => {
+    setOpenreport(!openreport);
+  };
+
   const toggleNewRequest = () => {
     setOpennew(!opennew);
   };
 
   useEffect(() => {
-    
-    if (userData.length > 0) {
-      
+    if (userData?.length > 0) {
       axios
         .get("https://serverworkot.onrender.com/loadworkOT", {
           params: { ID_user: userData[0].ID_user },
@@ -50,7 +46,6 @@ function Home({ data }: { data: any }) {
           setDataOT(response.data.users);
           setCountdocument(response.data.count);
           console.log("จำนวนเอกสาร", countdocument);
-         
         })
         .catch((error) => {
           console.error("Error loading data:", error);
@@ -92,15 +87,21 @@ function Home({ data }: { data: any }) {
               </div>
               <div className="cursor-pointer hover:opacity-50 max-md:bg-blue-600 max-md:text-center  max-md:p-1 max-md:rounded-md max-md:text-white ">
                 <i className="fa-solid fa-file-export text-green-400"></i>
-                <span className="p-2">ขออนุมัติ</span>
+                <span className="p-2" onClick={() => setStatus(1)}>
+                  ขออนุมัติ
+                </span>
               </div>
               <div className="cursor-pointer hover:opacity-50 max-md:bg-blue-600 max-md:text-center max-md:p-1 max-md:rounded-md max-md:text-white">
                 <i className="fa-solid fa-ban text-red-400"></i>
-                <span className="p-2">ยกเลิกขออนุมัติ</span>
+                <span className="p-2" onClick={() => setStatus(0)}>
+                  ยกเลิกขออนุมัติ
+                </span>
               </div>
               <div className="cursor-pointer hover:opacity-50 max-md:bg-blue-600 max-md:text-center max-md:p-1 max-md:rounded-md max-md:text-white">
                 <i className="fa-solid fa-trash text-indigo-700 max-md:text-red-600"></i>
-                <span className="p-2">ลบ</span>
+                <span className="p-2" onClick={() => setStatus(2)}>
+                  ลบ
+                </span>
               </div>
             </div>
           </div>
@@ -115,63 +116,68 @@ function Home({ data }: { data: any }) {
                       <th>วันที่</th>
                       <th className="max-md:hidden">เวลาเริ่มต้น</th>
                       <th className="max-md:hidden">เวลาสิ้นสุด</th>
-                      <th >สถานที่</th>
+                      <th>สถานที่</th>
                       <th className="max-md:hidden">ชื่อกะงาน</th>
-                      <th className="max-md:hidden"> หมายเหตุ</th>
+                      <th className="max-md:hidden">หมายเหตุ</th>
                       <th>สถานะ</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {dataOT.map((row, index) => (
-                      <tr
-                        key={index}
-                        className="text-center hover:cursor-pointer hover:bg-slate-300"
-                        onClick={() => {setSelectedOT(row);setOpenreport(true)}}
-                      >
-                        <td className="border-r border-l max-md:pb-1 border-b border-black p-2">
-                          {row.DocumentID}
-                        </td>
-                        <td className="border-r border-b max-md:p-0 border-black p-2">
-                          {row.startDate}
-                        </td>
-                        <td className="border-r border-b max-md:hidden max-md:p-0 border-black p-2">
-                          {row.startTime}
-                        </td>
-                        <td className="border-r border-b max-md:hidden border-black p-2">
-                          {row.endTime}
-                        </td>
-                        <td className="border-r border-b max-md:p-0 border-black p-2">
-                          {row.location}
-                        </td>
-                        <td className="border-r border-b max-md:hidden max-md:p-0  border-black p-2">
-                          {row.shiftName}
-                        </td>
-                        <td className="border-r max-md:hidden border-b max-md:p-0 border-black p-2">
-                          {row.note}
-                        </td>
-                        <td
-                          className="border-r border-b max-md:p-0 border-black p-2"
-                          style={{
-                            color:
-                              row.Status === 1
-                                ? "green"
-                                : row.Status === 0
-                                ? "red"
-                                : row.Status === 2
-                                ? "blue"
-                                : "",
+                    {dataOT
+                      .filter((row) => row.Status === Statusdata)
+                      .map((row, index) => (
+                        <tr
+                          key={index}
+                          className="text-center hover:cursor-pointer hover:bg-slate-300"
+                          onClick={() => {
+                            setSelectedOT(row);
+                            setOpenreport(true);
                           }}
                         >
-                          {row.Status === 1
-                            ? "รออนุมัติ"
-                            : row.Status === 0
-                            ? "ยกเลิก"
-                            : row.Status === 2
-                            ? "สำเร็จ"
-                            : ""}
-                        </td>
-                      </tr>
-                    ))}
+                          <td className="border-r border-l max-md:pb-1 border-b border-black p-2">
+                            {row.DocumentID}
+                          </td>
+                          <td className="border-r border-b max-md:p-0 border-black p-2">
+                            {row.startDate}
+                          </td>
+                          <td className="border-r border-b max-md:hidden max-md:p-0 border-black p-2">
+                            {row.startTime}
+                          </td>
+                          <td className="border-r border-b max-md:hidden border-black p-2">
+                            {row.endTime}
+                          </td>
+                          <td className="border-r border-b max-md:p-0 border-black p-2">
+                            {row.location}
+                          </td>
+                          <td className="border-r border-b max-md:hidden max-md:p-0 border-black p-2">
+                            {row.shiftName}
+                          </td>
+                          <td className="border-r max-md:hidden border-b max-md:p-0 border-black p-2">
+                            {row.note}
+                          </td>
+                          <td
+                            className="border-r border-b max-md:p-0 border-black p-2"
+                            style={{
+                              color:
+                                row.Status === 1
+                                  ? "green"
+                                  : row.Status === 0
+                                  ? "red"
+                                  : row.Status === 2
+                                  ? "blue"
+                                  : "",
+                            }}
+                          >
+                            {row.Status === 1
+                              ? "รออนุมัติ"
+                              : row.Status === 0
+                              ? "ยกเลิก"
+                              : row.Status === 2
+                              ? "สำเร็จ"
+                              : ""}
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>
@@ -199,9 +205,9 @@ function Home({ data }: { data: any }) {
           onClose={toggleNewRequest}
         />
       )}
-      {openreport && <Report reportdata={selectedOT} onClose={toggleReport}  />}
-
-
+      {openreport && (
+        <Report reportdata={selectedOT} onClose={toggleReport} />
+      )}
     </div>
   );
 }
