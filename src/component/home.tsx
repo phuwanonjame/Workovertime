@@ -85,19 +85,19 @@ function Home({ data }: { data: any }) {
                 <i className="fa-solid fa-plus"></i>
                 <span className="p-2">เพิ่มข้อมูลใหม่</span>
               </div>
-              <div className="cursor-pointer hover:opacity-50 max-md:bg-blue-600 max-md:text-center  max-md:p-1 max-md:rounded-md max-md:text-white ">
-                <i className="fa-solid fa-file-export text-green-400"></i>
+              <div className="cursor-pointer hover:opacity-50 max-md:bg-blue-600 max-md:text-center  max-md:p-1 max-md:rounded-md max-md:text-white p-2 rounded-md  shadow-md " style={{ backgroundColor: Statusdata === 1 ? "#0C56F5" : "", color: Statusdata===1?"#FFFFFF":"" }}>
+                <i className="fa-solid fa-file-export text-green-400 "  ></i>
                 <span className="p-2" onClick={() => setStatus(1)}>
                   ขออนุมัติ
                 </span>
               </div>
-              <div className="cursor-pointer hover:opacity-50 max-md:bg-blue-600 max-md:text-center max-md:p-1 max-md:rounded-md max-md:text-white">
-                <i className="fa-solid fa-ban text-red-400"></i>
+              <div className="cursor-pointer hover:opacity-50 max-md:bg-blue-600 max-md:text-center max-md:p-1 max-md:rounded-md max-md:text-white p-2 rounded-md shadow-md " style={{ backgroundColor: Statusdata === 0 ? "#0C56F5" : "" ,color: Statusdata===0?"#FFFFFF":"" }}>
+                <i className="fa-solid fa-ban text-red-400 "></i>
                 <span className="p-2" onClick={() => setStatus(0)}>
                   ยกเลิกขออนุมัติ
                 </span>
               </div>
-              <div className="cursor-pointer hover:opacity-50 max-md:bg-blue-600 max-md:text-center max-md:p-1 max-md:rounded-md max-md:text-white">
+              <div className="cursor-pointer hover:opacity-50 max-md:bg-blue-600 max-md:text-center max-md:p-1 max-md:rounded-md max-md:text-white p-2 rounded-md shadow-md " style={{ backgroundColor: Statusdata === 2 ? "#0C56F5":"" ,color: Statusdata===2?"#FFFFFF":""}}>
                 <i className="fa-solid fa-trash text-indigo-700 max-md:text-red-600"></i>
                 <span className="p-2" onClick={() => setStatus(2)}>
                   ลบ

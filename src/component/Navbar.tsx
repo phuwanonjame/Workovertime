@@ -26,8 +26,8 @@ function Navbar({ data }: { data: any[] }) {
                                 </span>
                                 {open && (
                                     <div className='relative'>
-                                        <div className='text-center rounded-md h-22 bg-white'>
-                                            <span onClick={handleLogout} className='hover:cursor-pointer'>Logout</span>
+                                        <div className='text-center rounded-md h-22 hover:cursor-pointer bg-white' onClick={handleLogout}>
+                                            <span  className=''>Logout</span>
                                         </div>
                                     </div>
                                 )}
