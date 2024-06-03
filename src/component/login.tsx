@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+const Swal = require('sweetalert2')
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -13,19 +14,38 @@ function Login() {
       Password: password,
       Status: 1
     };
-
+    Swal.fire({
+      title: 'กำลังเข้าสู่ระบบ...',
+      text: 'ระบบกำลังตรวจสอบจากฐานข้อมูล..',
+      allowOutsideClick: false,
+      showConfirmButton: false,   
+      didOpen: () => {
+        Swal.showLoading();
+      }
+  })
     axios.get("https://serverworkot.onrender.com/User", { params: data })
-      .then((response) => {
+      .then((response) => { 
         if (response.status === 200) {
+          Swal.close();
           console.log("Login successful:", response.data);
           sessionStorage.setItem('isLoggedIn', 'true');
           sessionStorage.setItem('userData', JSON.stringify(response.data));
           navigate("/home", { state: { userData: response.data } });
-        } else {
+        } else if (response.status === 404) {
           console.error("Login failed with status:", response.status);
+          Swal.fire({
+            icon: 'error',
+            title: 'การเข้าสู่ระบบล้มเหลว',
+            text: 'กรุณาตรวจสอบชื่อผู้ใช้และรหัสผ่านอีกครั้ง'
+          });
         }
       }).catch((error) => {
         console.error("Error during login:", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'เกิดข้อผิดพลาด',
+          text: 'ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ กรุณาลองใหม่อีกครั้ง'
+        });
       });
   }
 
