@@ -32,19 +32,19 @@ function Login() {
   return (
     <div className='w-screen h-screen bg-blue-500'>
       <div className='card h-full flex justify-center items-center'>
-        <div className='bg-white p-2 rounded-md flex flex-col justify-center items-center gap-4'>
+        <div className='bg-white shadow-md p-2 rounded-md flex flex-col justify-center items-center gap-4'>
           <div className=''>
             <img className="rounded-md w-[500px] object-cover" src="https://www.metrosystems.co.th/wp-content/uploads/2018/03/hitory4.png" alt="" />
           </div>
           <div className='p-2'>
-            <span className='text-2xl'>Metro systems Corporation</span>
+            <span className='text-2xl'>Metro Systems Corporation Plc.</span>
             <div className='mt-5 flex flex-col gap-2 justify-center'>
               <input type='text' value={username} placeholder='username' className='bg-slate-200 p-1 rounded-md outline-none' onChange={(e) => setUsername(e.target.value)}></input>
               <input type='password' value={password} placeholder='password' className='bg-slate-200 p-1 rounded-md outline-none' onChange={(e) => setPassword(e.target.value)}></input>
             </div>
           </div>
           <div>
-            <button className='p-5 bg-blue-700 w-52 text-white hover:opacity-50 rounded-md' onClick={login}>Login</button>
+            <button className='p-5 bg-blue-700 shadow-md w-52 text-white hover:opacity-50 rounded-md' onClick={login}>Login</button>
           </div>
         </div>
       </div>
