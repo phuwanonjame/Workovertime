@@ -1,22 +1,57 @@
 import axios from "axios";
 import React from "react";
-
+const Swal = require('sweetalert2')
 function Report({ reportdata, onClose }: any) {
   console.log(reportdata);
 
   function delworkOt(_id: any) {
     console.log(_id);
-    axios.put("https://serverworkot.onrender.com/delworkOT", { _id })
-      .then((response) => {
-        if (response.status === 204) {
-          console.log("Delete Successful");
-        } else {
-          console.log("Delete Failed with status", response.status);
-        }
-      })
-      .catch((error) => {
-        console.error("Error during delete:", error);
-      });
+    Swal.fire({
+      title: "คุณแน่ใจไหม?",
+      text: "คุณแน่ใจที่จะยกเลิกรายการ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ใช่, ยกเลิก!",
+      cancelButtonText: "ยกเลิก"
+    }).then((result: any) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'กำลังยกเลิก...',
+          text: 'กรุณารอสักครู่ระบบกำลังดำเนิน..',
+          allowOutsideClick: false,
+          showConfirmButton: false,  
+          html: '<div class="https://cdn.dribbble.com/users/2973561/screenshots/5757826/loading__.gif" alt="loading" /></div>', 
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+        axios.put("https://serverworkot.onrender.com/delworkOT", { _id })
+          .then((response) => {
+            if (response.status === 204) {
+              Swal.fire({
+                title: "ยกเลิกสำเร็จ!",
+                text: "รายการข้อคุณถูกยกเลิกสำเร็จ.",
+                icon: "success"
+              });
+            } else {
+              Swal.fire({
+                title: "Delete Failed",
+                text: `Delete Failed with status ${response.status}`,
+                icon: "error"
+              });
+            }
+          })
+          .catch((error) => {
+            Swal.fire({
+              title: "Error",
+              text: "Error during delete: " + error.message,
+              icon: "error"
+            });
+          });
+      }
+    });
   }
 
   return (
