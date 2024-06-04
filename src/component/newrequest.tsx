@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-
+const Swal = require('sweetalert2')
 interface DataRow {
   DocumentID: string;
   startDate: string;
@@ -112,34 +112,56 @@ function Newrequest({ onClose, data2, countdc }: any) {
 };
 
 
-  function addworkOT() {
-    console.table(newData);
-
-    axios
-      .post("https://serverworkot.onrender.com/request", data)
-      .then((response) => {
-        if (response.status === 200) {
-          console.log("ส่งข้อมูลสำเร็จ");
-          setNewData({
-            DocumentID: "",
-            startDate: "",
-            location: "",
-            shiftName: "",
-            startTime: "",
-            endTime: "",
-            TimeOT: 0,
-            PriceOT: 0,
-            note: "",
-            Status: 1,
-          });
-        } else {
-          console.log("ไม่สามารถส่งข้อมูลได้");
+function addworkOT() {
+  console.table(newData);
+  Swal.fire({
+    title: "คุณแน่ใจไหม?",
+    text: "ข้อมูลถูกต้องใช่ไหม..",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "ใช่, บันทึก!",
+    cancelButtonText: "ยกเลิก"
+  }).then((result: any) => {
+    if (result.isConfirmed) {
+      Swal.fire({
+        title: 'กำลังบันทึกข้อมูล...',
+        text: 'กรุณารอสักครู่ระบบกำลังดำเนิน..',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        didOpen: () => {
+          Swal.showLoading();
         }
-      })
-      .catch((error) => {
-        console.error(error, "ไม่สามารถส่งข้อมูลได้");
       });
-  }
+
+      axios.post("https://serverworkot.onrender.com/request", data)
+        .then((response) => {
+          if (response.status === 200) {
+            console.log("ส่งข้อมูลสำเร็จ");
+            setNewData({
+              DocumentID: "",
+              startDate: "",
+              location: "",
+              shiftName: "",
+              startTime: "",
+              endTime: "",
+              TimeOT: 0,
+              PriceOT: 0,
+              note: "",
+              Status: 1,
+            });
+            window.location.reload();
+          } else {
+            console.log("ไม่สามารถส่งข้อมูลได้");
+          }
+        })
+        .catch((error) => {
+          console.error(error, "ไม่สามารถส่งข้อมูลได้");
+        });
+    }
+  });
+}
 
   const deleteDataRow = (index: number) => {
     const updatedData = data.filter((_, i) => i !== index);
