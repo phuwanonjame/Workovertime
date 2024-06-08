@@ -1,9 +1,13 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-const Swal = require('sweetalert2')
+const Swal = require('sweetalert2');
 
-function Login() {
+interface LoginProps {
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function Login({ setIsLoggedIn }: LoginProps) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -22,7 +26,7 @@ function Login() {
       didOpen: () => {
         Swal.showLoading();
       }
-  })
+    });
     axios.get("https://serverworkot.onrender.com/User", { params: data })
       .then((response) => { 
         if (response.status === 200) {
@@ -30,6 +34,7 @@ function Login() {
           console.log("Login successful:", response.data);
           sessionStorage.setItem('isLoggedIn', 'true');
           sessionStorage.setItem('userData', JSON.stringify(response.data));
+          setIsLoggedIn(true); // Update the state to reflect login status
           navigate("/home", { state: { userData: response.data } });
         } else if (response.status === 404) {
           console.error("Login failed with status:", response.status);

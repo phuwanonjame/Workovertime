@@ -13,16 +13,16 @@ interface User {
 
 function App() {
   const [data1, setData] = useState<User[]>([]);
-  const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(sessionStorage.getItem('isLoggedIn') === 'true');
   const userData = sessionStorage.getItem('userData');
-  const userID = userData ? JSON.parse(userData)[0].ID_user : null; // ดึงค่า ID_user จากข้อมูลใน sessionStorage
+  const userID = userData ? JSON.parse(userData)[0].ID_user : null;
 
   useEffect(() => {
     const LoadData = async () => {
       if (userID !== null) {
         try {
           const response = await axios.get(`https://serverworkot.onrender.com/User`, {
-            params: { IDuser: userID }, 
+            params: { IDuser: userID },
           });
           setData(response.data);
           console.log("Loaded Data:", response.data);
@@ -40,11 +40,11 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
         <Route
           path="/home"
           element={
-            !isLoggedIn || isLoggedIn ? (
+            isLoggedIn ? (
               <>
                 <Navbar data={data1} />
                 <Home data={data1} />

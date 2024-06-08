@@ -60,22 +60,7 @@ function Home({ data }: { data: any }) {
           <div className="text-2xl">
             <p>ระบบขอค่าปฎิบัติงานล่วงเวลา OT</p>
           </div>
-          <div className="mt-5 flex justify-evenly max-md:hidden">
-            <div>
-              <span>วันที่เริ่มต้น</span>
-              <input
-                type="date"
-                className="ml-5 p-2 w-50 rounded-md bg-sky-200 focus:outline-none"
-              />
-            </div>
-            <div>
-              <span>วันที่สิ้นสุด</span>
-              <input
-                type="date"
-                className="ml-5 p-2 w-50 rounded-md bg-sky-200 focus:outline-none"
-              />
-            </div>
-          </div>
+          
           <div className="">
             <div className="flex flex-row max-md:grid max-md:grid-cols-2 max-md:justify-center max-md:items-center max-md:w-full max-md:mt-5  gap-10 mt-2">
               <div
